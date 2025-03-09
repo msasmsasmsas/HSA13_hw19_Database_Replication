@@ -2,22 +2,29 @@
 
 docker-compose up -d
 
-# MASTER SETUP
-docker exec -it mysql-m mysql -h 127.0.0.1 -uroot -prootpass
+## MASTER SETUP
+
+```
 docker exec -it mysql-m mysql -uroot -prootpass
+```
 
 
+```
 CREATE USER 'repl'@'%' IDENTIFIED WITH 'sha256_password' BY 'replpass';
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
 ALTER USER 'repl'@'%' REQUIRE NONE;
 FLUSH PRIVILEGES;
+```
 
+```
 mysql> SELECT user, host, plugin, ssl_type FROM mysql.user WHERE user = 'repl';
-+------+------+-----------------+----------+
+```
+
+
 | user | host | plugin          | ssl_type |
 +------+------+-----------------+----------+
 | repl | %    | sha256_password |          |
-+------+------+-----------------+----------+
+
 1 row in set (0.00 sec)
 
 
