@@ -371,7 +371,7 @@ mysql> SELECT * FROM test_table;
 
 
 ## stop mysql-s1
-drop lust column
+drop lust column 'timestamp'
 ```
 mysql> STOP REPLICA;
 Query OK, 0 rows affected (0.01 sec)
@@ -499,7 +499,7 @@ mysql> SELECT * FROM test_table;
 
 
 ## stop mysql-s1
-drop middle column
+drop middle column 'name'
 ```
 mysql> STOP REPLICA;
 Query OK, 0 rows affected (0.01 sec)
@@ -508,7 +508,7 @@ Query OK, 0 rows affected (0.01 sec)
 ```
 mysql> USE test_db;
 Database changed
-mysql> ALTER TABLE test_table DROP COLUMN timestamp;
+mysql> ALTER TABLE test_table DROP COLUMN name;
 Query OK, 0 rows affected (0.01 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 ```
@@ -549,7 +549,7 @@ mysql> select * from test_table;
 
 ```
 
-## stop mysql-s1
+## mysql-s1
 ```
 mysql> SELECT * FROM test_table;
 +-----+---------------------+
