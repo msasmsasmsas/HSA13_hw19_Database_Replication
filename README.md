@@ -340,15 +340,15 @@ mysql> select * from test_table;
 3 rows in set (0.00 sec)
 ```
 
-
+## add rows by script
 ```
 pip install -r requirements.txt
 .\.venv\Scripts\python.exe .\app\app.py
 ```
 
 
-## mysql-s1:
-## mysql-s2:
+
+## mysql-s1, mysql-s2: same result
 ```
 mysql> SELECT * FROM test_table;
 +-----+-------------+---------------------+
