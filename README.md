@@ -42,26 +42,25 @@ mysql> SHOW VARIABLES LIKE 'require_secure_transport';
 SHOW BINARY LOG STATUS;
 ```
 mysql> SHOW BINARY LOG STATUS;
-```
+
 | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
 |------------------|----------|--------------|------------------|-------------------|
 | mysql-bin.000003 |     3095 |              |                  |                   |
-
+```
 
 ```
 mysql> SHOW BINARY LOGS;
-```
 | Log_name         | File_size | Encrypted |
 |------------------|-----------|-----------|
 | mysql-bin.000001 |       181 | No        |
 | mysql-bin.000002 |   2976178 | No        |
 | mysql-bin.000003 |      3095 | No        |
-
 3 rows in set (0.00 sec)
+```
+
 
 ```
 mysql> SHOW BINLOG EVENTS;
-```
 | Log_name         | Pos | Event_type     | Server_id | End_log_pos | Info                             |
 |------------------|-----|----------------|-----------|-------------|----------------------------------|
 | mysql-bin.000001 | 4   | Format_desc    |         1 |         127 | Server ver: 9.2.0, Binlog ver: 4 |
@@ -69,24 +68,27 @@ mysql> SHOW BINLOG EVENTS;
 | mysql-bin.000001 | 158 | Stop           |         1 |         181 |                                  |
 
 3 rows in set (0.00 sec)
-
+```
 
 ```
 mysql> SELECT user, host, plugin FROM mysql.user WHERE user = 'root';
-```
+
 | user | host      | plugin                |
 |------|-----------|-----------------------|
 | root | %         | caching_sha2_password |
 | root | localhost | caching_sha2_password |
 2 rows in set (0.01 sec)
+```
+
 
 ```
 mysql> SELECT user, host, plugin FROM mysql.user WHERE user = 'repl';
-```
+
 | user | host | plugin          |
 |------|------|-----------------|
 | repl | %    | sha256_password |
 1 row in set (0.00 sec)
+```
 
 ```
 exit
