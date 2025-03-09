@@ -91,7 +91,7 @@ exit
 .\.venv\Scripts\Activate.ps1
 ```
 
-# mysql-s1:
+## mysql-s1:
 ```
 docker exec -it mysql-s1 mysql -uroot -prootpass
 ```
@@ -189,7 +189,7 @@ Source_SSL_Verify_Server_Cert: No
 ```
 
 
-# mysql-s2:
+## mysql-s2:
 ```
 docker exec -it mysql-s2 mysql -uroot -prootpass
 ```
@@ -288,7 +288,7 @@ Source_SSL_Verify_Server_Cert: No
 ```
 
 
-# MASTER
+## MASTER
 ```
 mysql> USE test_db;
 Database changed
@@ -314,7 +314,7 @@ mysql> INSERT INTO test_table VALUES (4, 'Test4','2025-03-09');
 Query OK, 1 row affected (0.00 sec)
 ```
 
-# mysql-s1:
+## mysql-s1:
 ```
 mysql> select * from test_table;
 +----+-------+---------------------+
@@ -327,7 +327,7 @@ mysql> select * from test_table;
 3 rows in set (0.00 sec)
 ```
 
-# mysql-s2:
+## mysql-s2:
 ```
 mysql> select * from test_table;
 +----+-------+---------------------+
@@ -347,8 +347,8 @@ pip install -r requirements.txt
 ```
 
 
-# mysql-s1:
-# mysql-s2:
+## mysql-s1:
+## mysql-s2:
 ```
 mysql> SELECT * FROM test_table;
 +-----+-------------+---------------------+
