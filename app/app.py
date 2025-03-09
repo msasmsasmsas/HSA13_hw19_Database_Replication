@@ -8,7 +8,7 @@ conn = mysql.connector.connect(
     user="root",
     password="rootpass",
     database="test_db",
-    port=3306
+    port=3310
 )
 cursor = conn.cursor()
 
@@ -31,6 +31,7 @@ try:
 
         # Пауза 5 секунд перед следующей вставкой
         time.sleep(5)
+        break
 
 except mysql.connector.Error as err:
     print(f"Error: {err}")

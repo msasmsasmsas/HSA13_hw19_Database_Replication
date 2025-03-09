@@ -303,4 +303,53 @@ mysql> select * from test_table;
 +----+-------+---------------------+
 1 row in set (0.00 sec)
 
+mysql> INSERT INTO test_table VALUES (3, 'Test3','2025-03-09');
+Query OK, 1 row affected (0.00 sec)
+mysql> INSERT INTO test_table VALUES (4, 'Test4','2025-03-09');
+Query OK, 1 row affected (0.00 sec)
+
+# mysql-s1:
+mysql> select * from test_table;
++----+-------+---------------------+
+| id | name  | timestamp           |
++----+-------+---------------------+
+|  2 | Test2 | 2025-03-09 00:00:00 |
+|  3 | Test3 | 2025-03-09 00:00:00 |
+|  4 | Test4 | 2025-03-09 00:00:00 |
++----+-------+---------------------+
+3 rows in set (0.00 sec)
+
+# mysql-s2:
+mysql> select * from test_table;
++----+-------+---------------------+
+| id | name  | timestamp           |
++----+-------+---------------------+
+|  2 | Test2 | 2025-03-09 00:00:00 |
+|  3 | Test3 | 2025-03-09 00:00:00 |
+|  4 | Test4 | 2025-03-09 00:00:00 |
++----+-------+---------------------+
+3 rows in set (0.00 sec)
+
+
 pip install -r requirements.txt
+.\.venv\Scripts\python.exe .\app\app.py
+
+# mysql-s1:
+# mysql-s2:
+mysql> SELECT * FROM test_table;
++-----+-------------+---------------------+
+| id  | name        | timestamp           |
++-----+-------------+---------------------+
+|   2 | Test2       | 2025-03-09 00:00:00 |
+|   3 | Test3       | 2025-03-09 00:00:00 |
+|   4 | Test4       | 2025-03-09 00:00:00 |
+|   5 | test_name_0 | 2025-03-09 21:16:48 |
+|   6 | test_name_1 | 2025-03-09 21:16:48 |
+|   7 | test_name_2 | 2025-03-09 21:16:48 |
+|   8 | test_name_3 | 2025-03-09 21:16:48 |
+|   9 | test_name_4 | 2025-03-09 21:16:48 |
+|  10 | test_name_5 | 2025-03-09 21:16:48 |
+|  11 | test_name_6 | 2025-03-09 21:16:48 |
+|  12 | test_name_7 | 2025-03-09 21:16:48 |
+|  13 | test_name_8 | 2025-03-09 21:16:48 |
+|  14 | test_name_9 | 2025-03-09 21:16:48 |
