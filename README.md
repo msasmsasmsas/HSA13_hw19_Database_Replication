@@ -368,3 +368,197 @@ mysql> SELECT * FROM test_table;
 |  13 | test_name_8 | 2025-03-09 21:16:48 |
 |  14 | test_name_9 | 2025-03-09 21:16:48 |
 ```
+
+
+## stop mysql-s1
+drop lust column
+```
+mysql> STOP REPLICA;
+Query OK, 0 rows affected (0.01 sec)
+```
+
+```
+mysql> USE test_db;
+Database changed
+mysql> ALTER TABLE test_table DROP COLUMN timestamp;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+```
+mysql> DESCRIBE test_table;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int         | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(50) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+```
+
+```
+mysql> START REPLICA;
+Query OK, 0 rows affected (0.04 sec)
+```
+
+
+## master
+```
+mysql> INSERT INTO test_table VALUES (135, 'Test_135','2025-03-09');
+Query OK, 1 row affected (0.01 sec)
+```
+
+## stop mysql-s1
+```
+mysql> SELECT * FROM test_table;
++-----+-------------+
+| id  | name        |
++-----+-------------+
+
+| 135 | Test_135    |
++-----+-------------+
+134 rows in set (0.00 sec)
+```
+
+
+
+## master
+```
+docker exec -it mysql-m mysqldump -uroot -prootpass --databases test_db > test_db_dump.sql
+```
+
+## mysql-s1 
+restor db
+```
+mysql> STOP REPLICA;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> RESET REPLICA ALL;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```
+(.venv) PS E:\HSA13\HSA13_hw19_Database_Replication> docker exec -it mysql-m mysqldump -uroot -prootpass --databases test_db --no-create-db -r /tmp/test_db_dump.sql
+mysqldump: [Warning] Using a password on the command line interface can be insecure.
+
+
+(.venv) PS E:\HSA13\HSA13_hw19_Database_Replication> docker cp mysql-m:/tmp/test_db_dump.sql test_db_dump.sql
+Successfully copied 9.22kB to E:\HSA13\HSA13_hw19_Database_Replication\test_db_dump.sql
+
+
+
+(.venv) PS E:\HSA13\HSA13_hw19_Database_Replication> docker exec -it mysql-s1 mysql -uroot -prootpass -e "DROP DATABASE test_db; CREATE DATABASE test_db;"
+mysql: [Warning] Using a password on the command line interface can be insecure.
+
+(.venv) PS E:\HSA13\HSA13_hw19_Database_Replication> docker exec -it mysql-s1 mysql -uroot -prootpass -e "STOP REPLICA; RESET REPLICA ALL;"
+mysql: [Warning] Using a password on the command line interface can be insecure.
+
+
+(.venv) PS E:\HSA13\HSA13_hw19_Database_Replication> Get-Content test_db_dump.sql | docker exec -i mysql-s1 mysql -uroot -prootpass -D test_db
+mysql: [Warning] Using a password on the command line interface can be insecure.
+
+```
+
+
+## master
+```
+mysql> SHOW BINARY LOGS;
++------------------+-----------+-----------+
+| Log_name         | File_size | Encrypted |
++------------------+-----------+-----------+
+| mysql-bin.000001 |       181 | No        |
+| mysql-bin.000002 |   2976178 | No        |
+| mysql-bin.000003 |     11400 | No        |
++------------------+-----------+-----------+
+3 rows in set (0.00 sec)
+```
+
+```
+mysql> CHANGE REPLICATION SOURCE TO
+    ->          SOURCE_HOST='mysql-m',
+    ->          SOURCE_USER='repl',
+    ->          SOURCE_PASSWORD='replpass',
+    ->          SOURCE_LOG_FILE='mysql-bin.000003',
+    ->          SOURCE_LOG_POS=11400;
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+mysql> START REPLICA;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SELECT * FROM test_table;
++-----+-------------+---------------------+
+| id  | name        | timestamp           |
++-----+-------------+---------------------+
+|   2 | Test2       | 2025-03-09 00:00:00 |
+
+| 135 | Test_135    | 2025-03-09 00:00:00 |
++-----+-------------+---------------------+
+134 rows in set (0.00 sec)
+
+```
+
+
+## stop mysql-s1
+drop middle column
+```
+mysql> STOP REPLICA;
+Query OK, 0 rows affected (0.01 sec)
+```
+
+```
+mysql> USE test_db;
+Database changed
+mysql> ALTER TABLE test_table DROP COLUMN timestamp;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+```
+mysql> DESCRIBE test_table;
++-----------+----------+------+-----+---------+----------------+
+| Field     | Type     | Null | Key | Default | Extra          |
++-----------+----------+------+-----+---------+----------------+
+| id        | int      | NO   | PRI | NULL    | auto_increment |
+| timestamp | datetime | YES  |     | NULL    |                |
++-----------+----------+------+-----+---------+----------------+
+2 rows in set (0.04 sec)
+
+```
+
+```
+mysql> START REPLICA;
+Query OK, 0 rows affected (0.04 sec)
+```
+
+
+## master
+```
+mysql> INSERT INTO test_table VALUES (136, 'Test_136','2025-03-09');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from test_table;
++-----+-------------+---------------------+
+| id  | name        | timestamp           |
++-----+-------------+---------------------+
+|   2 | Test2       | 2025-03-09 00:00:00 |
+
+| 135 | Test_135    | 2025-03-09 00:00:00 |
+| 136 | Test_136    | 2025-03-09 00:00:00 |
++-----+-------------+---------------------+
+135 rows in set (0.00 sec)
+
+```
+
+## stop mysql-s1
+```
+mysql> SELECT * FROM test_table;
++-----+---------------------+
+| id  | timestamp           |
++-----+---------------------+
+|   2 | 2025-03-09 00:00:00 |
+
+| 135 | 2025-03-09 00:00:00 |
++-----+---------------------+
+134 rows in set (0.00 sec)
+
+```

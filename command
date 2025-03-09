@@ -353,3 +353,23 @@ mysql> SELECT * FROM test_table;
 |  12 | test_name_7 | 2025-03-09 21:16:48 |
 |  13 | test_name_8 | 2025-03-09 21:16:48 |
 |  14 | test_name_9 | 2025-03-09 21:16:48 |
+
+## stop mysql-s1
+mysql> STOP REPLICA;
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> USE test_db;
+Database changed
+mysql> ALTER TABLE test_table DROP COLUMN timestamp;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESCRIBE test_table;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int         | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(50) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
