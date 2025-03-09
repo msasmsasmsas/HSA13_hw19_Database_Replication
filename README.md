@@ -18,26 +18,22 @@ FLUSH PRIVILEGES;
 
 ```
 mysql> SELECT user, host, plugin, ssl_type FROM mysql.user WHERE user = 'repl';
-```
-
-
-
 | user | host | plugin          | ssl_type |
 |------|------|-----------------|----------|
 | repl | %    | sha256_password |          |
-
-
-
 1 row in set (0.00 sec)
+```
+
 
 ```
 mysql> SHOW VARIABLES LIKE 'require_secure_transport';
-```
 | Variable_name            | Value |
 |--------------------------|-------|
 | require_secure_transport | OFF   |
 
 1 row in set (0.00 sec)
+```
+
 
 SHOW BINARY LOG STATUS;
 ```
