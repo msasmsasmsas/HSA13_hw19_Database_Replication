@@ -102,15 +102,10 @@ mysql> STOP REPLICA;
 
 
 CHANGE REPLICATION SOURCE TO
-
          SOURCE_HOST='mysql-m',
-         
          SOURCE_USER='repl',
-         
          SOURCE_PASSWORD='replpass',
-         
          SOURCE_LOG_FILE='mysql-bin.000003',
-         
          SOURCE_LOG_POS=3095;
          
 ```         
@@ -206,15 +201,10 @@ Query OK, 0 rows affected (0.02 sec)
 ```
 
 CHANGE REPLICATION SOURCE TO
-
          SOURCE_HOST='mysql-m',
-         
          SOURCE_USER='repl',
-         
          SOURCE_PASSWORD='replpass',
-         
          SOURCE_LOG_FILE='mysql-bin.000003',
-         
          SOURCE_LOG_POS=3095;
          
 ```         
